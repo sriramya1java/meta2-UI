@@ -6,10 +6,13 @@
   <div class="main">
     <div class="container" style="width: 100%">
       <div class="treeSelf">
-        <vue-drag-tree :data='categoriesList' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDrop' :defaultText='"New Node"' @current-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
+        <vue-drag-tree :data='categoriesList' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDropLeft' :fromWhere='left' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
       </div>
       <div class="treeSelf">
-        <vue-drag-tree :data='categoriesList1' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDrop' :defaultText='"New Node"' @current-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
+        <vue-drag-tree :data='categoriesList1' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDropRight' :fromWhere='right' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
+      </div>
+      <div class='showSec'>
+        <pre>{{formatData1}}</pre>
       </div>
     </div>
     <v-layout row wrap class="pt-4" align-right>
@@ -37,7 +40,9 @@ export default{
   data () {
     return {
       en: false,
-      dialog: false
+      dialog: false,
+      left: 'left',
+      right: 'right'
     }
   },
   computed: {
@@ -48,6 +53,17 @@ export default{
     },
     categoriesList: {
       get () {
+        this.$store.state.categoriesList.forEach(x => {
+          x.children = []
+        })
+        console.log(this.$store.state.categoriesList)
+
+        // to delete children and key from the list
+        /* this.$store.state.categoriesList.forEach(x => {
+          delete x.children
+          delete x.key
+        }) */
+
         return this.$store.state.categoriesList
       }
     },
@@ -75,7 +91,10 @@ export default{
     allowDrag (model, component) {
       return true
     },
-    allowDrop (model, component) {
+    allowDropLeft (model, component) {
+      return false
+    },
+    allowDropRight (model, component) {
       return true
     },
     curNodeClicked (model, component) {
@@ -98,11 +117,17 @@ export default{
       console.log('dragEndHandler: ', model, component, e)
     },
     dropHandler (model, component, e) {
-      console.log('dropHandler: ', model, component, e)
+      // console.log('dropHandler: ', model, component, e)
+      const list = model.children
+      // change the id
+      if (list && list !== undefined) {
+        list.forEach(x => {
+          x.key = Math.floor(Math.random() * 1000000000000) + 1
+        })
+      }
     }
   }
 }
-</script>
 </script>
 
 <style scoped>

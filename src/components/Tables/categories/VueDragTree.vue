@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-for='(item,index) in newData'>
-      <drag-node :model='item' :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :defaultText='defaultText' :key='index'></drag-node>
+      <drag-node :model='item' :allowDrag='allowDrag' :fromWhere="fromWhere" :allowDrop='allowDrop' :depth='increaseDepth' :defaultText='defaultText' :key='index'></drag-node>
     </template>
   </div>
 </template>
@@ -28,6 +28,11 @@
       depth: {
         type: Number,
         default: 0
+      },
+      fromWhere: {
+        // Default text displayed when adding a node．
+        type: String,
+        default: this.fromWhere
       }
     },
     computed: {

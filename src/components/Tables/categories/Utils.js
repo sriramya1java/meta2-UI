@@ -59,7 +59,7 @@ const isLinealRelation = (from, to) => {
  * @param from Dragged node component Vnode data
  * @param to Drag and drop node component Vnode data
  */
-const exchangeData = (rootCom, from, to) => {
+const exchangeData = (rootCom, from, to, fromWhere) => {
   // If the drag node is the same as the dragged node，return;
   if (from._uid === to._uid) {
     return
@@ -91,37 +91,46 @@ const exchangeData = (rootCom, from, to) => {
     return
   }
 
-  // If it is a linear relationship, but not a father and son
-  if (isLinealRelation(from, to)) {
-    // const fromParentModel = from.$parent.model
-    const toModel = to.model
-
-    // First remove from from its parent node information;
-    /* fromParentModel.children = fromParentModel.children.filter(
-      item => item.id !== newFrom.id
-    ) */
-
-    // Then the from node is added to the last bit in the to node.
-    toModel.children = toModel.children.concat([newFrom])
-    return
-  }
-
-  // Two nodes (wireless relationship), throw the from node into the to node.
-  // const fromParentModel = from.$parent.model
   const toModel = to.model
-  // First remove from from its parent node information
-  /* if (from.$parent.$options._componentTag === 'vue-drag-tree') {
-    /**
-     * Find the parent component (data source header) of the vue-drag-tree and modify the data here.
-     */
-    /* from.$parent.newData = from.$parent.newData.filter(
-      item => item.id !== newFrom.id
-    )
+
+  if (fromWhere === 'right') {
+    // If it is a linear relationship, but not a father and son
+    if (isLinealRelation(from, to)) {
+      const toModel = to.model
+      toModel.children = toModel.children.concat([newFrom])
+      return
+    }
   } else {
-    fromParentModel.children = fromParentModel.children.filter(
-      item => item.id !== newFrom.id
-    )
-  } */
+    if (isLinealRelation(from, to)) {
+      const fromParentModel = from.$parent.model
+      const toModel = to.model
+
+      // First remove from from its parent node information;
+      fromParentModel.children = fromParentModel.children.filter(
+        item => item.id !== newFrom.id
+      )
+
+      // Then the from node is added to the last bit in the to node.
+      toModel.children = toModel.children.concat([newFrom])
+      return
+    }
+
+    // Two nodes (wireless relationship), throw the from node into the to node.
+    const fromParentModel = from.$parent.model
+    // First remove from from its parent node information
+    if (from.$parent.$options._componentTag === 'vue-drag-tree') {
+      /**
+       * Find the parent component (data source header) of the vue-drag-tree and modify the data here.
+       */
+      from.$parent.newData = from.$parent.newData.filter(
+        item => item.id !== newFrom.id
+      )
+    } else {
+      fromParentModel.children = fromParentModel.children.filter(
+        item => item.id !== newFrom.id
+      )
+    }
+  }
 
   // Then the from node is added to the last bit in the to node.
   if (!toModel.children) {

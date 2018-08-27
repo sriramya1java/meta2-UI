@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class='treeMargin' v-show="open" v-if="isFolder">
-      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.id' :defaultText='defaultText'>
+      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :defaultText='defaultText'>
       </item>
     </div>
   </div>
@@ -20,6 +20,7 @@
   let toData = null
   let nodeClicked = undefined // eslint-disable-line no-undef-init
   let rootTree = null
+
   export default {
     name: 'DragNode',
     data () {
@@ -50,6 +51,11 @@
       depth: {
         type: Number,
         default: 0
+      },
+      fromWhere: {
+        // Default text displayed when adding a node．
+        type: String,
+        default: this.fromWhere
       }
     },
     computed: {
@@ -70,12 +76,15 @@
         }
         // Call the method in the parent component of the vue-drag-tree to pass the id value of the currently clicked node
         rootTree.emitCurNodeClicked(this.model, this)
+
         // Record the status of the node being clicked
         this.isClicked = !this.isClicked
+
         // check if children and open all child on click
         if (this.$children && this.$children.length > 0) {
           // If it has children components.
           let childrenStack = this.$children
+
           while (childrenStack.length !== 0) {
             let item = childrenStack.shift()
             // same as it's parent
@@ -85,10 +94,12 @@
             }
           }
         }
+
         // User needs node highlighting
         // Click on the current node for the first time. The current node is highlighted, traversing the style of resetting other nodes
         if (nodeClicked !== this.model.id) {
           let treeParent = rootTree.$parent
+
           // Traverse to reset the highlight style of all tree components
           let nodeStack = [treeParent.$children[0]]
           while (nodeStack.length !== 0) {
@@ -100,10 +111,12 @@
           }
           // Then set the style of the current node to highlight
           this.isClicked = true
+
           // Set the node to the current node
           nodeClicked = this.model.id
         }
       },
+
       changeType () {
         // The user needs to highlight --> to record the currently clicked node
         if (this.currentHighlight) {
@@ -131,6 +144,7 @@
       removeChild (id) {
         // Get the model.children of the parent component
         let parent_model_children = this.$parent.model.children // eslint-disable-line camelcase
+
         // Deleted in the parent component model.children
         for (let index in parent_model_children) { // eslint-disable-line camelcase
           // Find the deleted id
@@ -172,7 +186,8 @@
           return
         }
         toData = this
-        exchangeData(rootTree, fromData, toData)
+        console.log('fromWhere', this.fromWhere)
+        exchangeData(rootTree, fromData, toData, this.fromWhere)
         rootTree.emitDrop(this.model, this, e)
       },
       dragEnd (e) {
@@ -193,21 +208,27 @@
   .dnd-container {
     background: #fff;
   }
+
   .dnd-container .is-clicked {
     background: #e5e9f2;
   }
+
   .dnd-container .is-hover {
     background: #e5e9f2;
   }
+
   .item {
     cursor: pointer;
   }
+
   .bold {
     font-weight: bold;
   }
+
   .text {
     font-size: 12px;
   }
+
   .treeNodeText {
     height: 28px;
     box-sizing: border-box;
@@ -221,6 +242,7 @@
     width: 1rem;
     color: #324057;
   }
+
   .vue-drag-node-icon {
     display: inline-block;
     width: 0;
@@ -233,6 +255,7 @@
     border-right: 0 solid yellow;
     transition: transform 0.3s ease-in-out;
   }
+
   .nodeClicked {
     transform: rotate(90deg);
   }
