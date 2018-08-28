@@ -215,6 +215,7 @@
 
   .dnd-container .is-hover {
     background: #e5e9f2;
+    cursor: pointer;
   }
 
   .item {
