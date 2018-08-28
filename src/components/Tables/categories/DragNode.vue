@@ -14,7 +14,8 @@
 </template>
 
 <script>
-  import { findRoot, exchangeData } from './utils.js'
+  import { findRoot, exchangeLeftData } from './utils.js'
+  import { findRootRight, exchangeRightData } from './utilRight.js'
   let id = 1000
   let fromData = null
   let toData = null
@@ -31,7 +32,8 @@
         styleObj: {
           opacity: 1
         },
-        showChildren: false
+        showChildren: false,
+        from: ''
       }
     },
     props: {
@@ -188,7 +190,7 @@
         this.styleObj.opacity = 1
         rootTree.emitDragLeave(this.model, this, e)
       },
-      drop (e) {
+      drop: function (e) {
         e.preventDefault()
         this.styleObj.opacity = 1
         // If it is judged that the current node is not allowed to be dropped, return;
@@ -196,8 +198,14 @@
           return
         }
         toData = this
-        console.log('fromWhere', this.fromWhere)
-        exchangeData(rootTree, fromData, toData, this.fromWhere)
+        this.from = fromData.fromWhere
+        console.log('from', this.from)
+        if (this.from === 'left') {
+          exchangeLeftData(rootTree, fromData, toData)
+        } else if (this.from === 'right') {
+          exchangeRightData(rootTree, fromData, toData)
+        }
+
         rootTree.emitDrop(this.model, this, e)
       },
       dragEnd (e) {
@@ -209,7 +217,7 @@
       this.$options.components.item = require('./DragNode.vue').default
     },
     created () {
-      rootTree = findRoot(this)
+      rootTree = this.from === 'left' ? findRoot(this) : findRootRight(this)
     }
   }
 </script>
