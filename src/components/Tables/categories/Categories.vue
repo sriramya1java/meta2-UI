@@ -33,6 +33,7 @@
 </template>
 <script>
 import VueDragTree from './VueDragTree.vue'
+import VueDragTreeLeft from '../CategoriesTree/VueDragTreeLeft.vue'
 export default{
   props: ['axesDimensionsSelected'],
   components: {
