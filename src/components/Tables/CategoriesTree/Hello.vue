@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import VueDragTree from './VueDragTree.vue'
+  import VueDragTree from './VueDragTreeLeft.vue'
   export default {
     name: 'Hello',
     components: {

@@ -5,7 +5,7 @@ const findRoot = which => {
   while (!ok) {
     // 根据组件name来判断
     // eslint-disable-next-line
-    if ('vue-drag-tree' === that.$options._componentTag) {
+    if ('vue-drag-tree-left' === that.$options._componentTag) {
       ok = true
       // 交换两者的数据
       break

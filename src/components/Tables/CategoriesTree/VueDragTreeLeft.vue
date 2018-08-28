@@ -1,15 +1,15 @@
 <template>
   <div>
     <template v-for='(item,index) in newData'>
-      <drag-node :model='item' :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :defaultText='defaultText' :key='index'></drag-node>
+      <drag-node-left :model='item' :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :defaultText='defaultText' :key='index'></drag-node-left>
     </template>
   </div>
 </template>
 
 <script>
-  import DragNode from './DragNode.vue'
+  import DragNodeLeft from './DragNodeLeft.vue'
   export default {
-    name: 'VueDragTree',
+    name: 'VueDragTreeLeft',
     props: {
       data: Array,
       allowDrag: {
@@ -75,7 +75,7 @@
       }
     },
     components: {
-      DragNode
+      DragNodeLeft
     }
   }
 </script>

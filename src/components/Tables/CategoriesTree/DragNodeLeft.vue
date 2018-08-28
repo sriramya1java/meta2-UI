@@ -3,11 +3,11 @@
     <div :class='{"is-clicked": isClicked,"is-hover":isHover}' @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
       <div :style="{ 'padding-left': (this.depth - 1) * 1.5 + 'rem' }" :id='model.id' class='treeNodeText'>
         <span :class="[isClicked ? 'nodeClicked' : '','vue-drag-node-icon']"></span>
-        <span class='text'>{{model.name}}</span>
+        <span class='text'>{{model.label}}</span>
       </div>
     </div>
     <div class='treeMargin' v-show="open" v-if="isFolder">
-      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.id' :defaultText='defaultText'>
+      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :defaultText='defaultText'>
       </item>
     </div>
   </div>
@@ -22,7 +22,7 @@
   let rootTree = null // vue-drag-tree组件引用
 
   export default {
-    name: 'DragNode',
+    name: 'DragNodeLeft',
     data () {
       return {
         open: false,
@@ -132,7 +132,7 @@
       },
       addChild () {
         this.model.children.push({
-          name: this.defaultText,
+          label: this.defaultText,
           id: id++
         })
       },
@@ -190,7 +190,7 @@
       }
     },
     beforeCreate () {
-      this.$options.components.item = require('./DragNode.vue').default
+      this.$options.components.item = require('./DragNodeLeft.vue').default
     },
     created () {
       rootTree = findRoot(this)
