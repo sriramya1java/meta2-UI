@@ -19,15 +19,15 @@
   let fromData = null
   let toData = null
   let nodeClicked = undefined // eslint-disable-line no-undef-init
-  let rootTree = null // vue-drag-tree组件引用
+  let rootTree = null
 
   export default {
     name: 'DragNodeLeft',
     data () {
       return {
         open: false,
-        isClicked: false, // 当前节点被点击
-        isHover: false, // 当前节点被hvoer
+        isClicked: false, // The current node is clicked
+        isHover: false, // The current node is hvoer
         styleObj: {
           opacity: 1
         }
@@ -44,9 +44,9 @@
         default: () => true
       },
       defaultText: {
-        // 填加节点时显示的默认文本．
+        // Default text displayed when adding a node．
         type: String,
-        default: '新增节点'
+        default: 'Add Node'
       },
       depth: {
         type: Number,
@@ -69,10 +69,10 @@
         if (this.isFolder) {
           this.open = !this.open
         }
-        // 调用vue-drag-tree的父组件中的方法,以传递出当前被点击的节点的id值
+        // Call the method in the parent component of the vue-drag-tree to pass the id value of the currently clicked node
         rootTree.emitCurNodeClicked(this.model, this)
 
-        // 纪录节点被点击的状态
+        // Record the status of the node being clicked
         this.isClicked = !this.isClicked
 
         // check if children and open all child on click
@@ -90,12 +90,12 @@
           }
         }
 
-        // 用户需要节点高亮
-        // 第一次点击当前节点．当前节点高亮，遍历重置其他节点的样式
+        // User needs node highlighting
+        // Click on the current node for the first time. The current node is highlighted, traversing the style of resetting other nodes
         if (nodeClicked !== this.model.id) {
           let treeParent = rootTree.$parent
 
-          // 遍历重置所有树组件的高亮样式
+          // Traverse to reset the highlight style of all tree components
           let nodeStack = [treeParent.$children[0]]
           while (nodeStack.length !== 0) {
             let item = nodeStack.shift()
@@ -104,16 +104,16 @@
               nodeStack = nodeStack.concat(item.$children)
             }
           }
-          // 然后把当前节点的样式设置为高亮
+          // Then set the style of the current node to highlight
           this.isClicked = true
 
-          // 设置节点为 当前节点
+          // Set the node to the current node
           nodeClicked = this.model.id
         }
       },
 
       changeType () {
-        // 用户需要高亮-->才纪录当前被点击节点
+        // The user needs to highlight --> to record the currently clicked node
         if (this.currentHighlight) {
           nodeClicked = this.model.id
         }
@@ -137,12 +137,12 @@
         })
       },
       removeChild (id) {
-        // 获取父组件的model.children
+        // Get the model.children of the parent component
         let parent_model_children = this.$parent.model.children // eslint-disable-line camelcase
 
-        // 在父组件model.children里删除
+        // Deleted in the parent component model.children
         for (let index in parent_model_children) { // eslint-disable-line camelcase
-          // 找到该删的id
+          // Find the deleted id
           if (parent_model_children[index].id === id) {
             parent_model_children = parent_model_children.splice(index, 1) // eslint-disable-line camelcase
             break
@@ -176,7 +176,7 @@
       drop (e) {
         e.preventDefault()
         this.styleObj.opacity = 1
-        // 如果判断当前节点不允许被drop，return;
+        // If it is judged that the current node is not allowed to be dropped, return;
         if (!this.allowDrop(this.model, this)) {
           return
         }
@@ -232,7 +232,6 @@
     display: flex;
     align-items: center;
   }
-
   .changeTree {
     width: 1rem;
     color: #324057;
@@ -255,4 +254,3 @@
     transform: rotate(90deg);
   }
 </style>
-
