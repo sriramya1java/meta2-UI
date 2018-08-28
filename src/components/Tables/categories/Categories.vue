@@ -4,15 +4,16 @@
     <v-subheader>Please select only one dimension to edit.</v-subheader>
   </div> -->
   <div class="main">
+    <v-layout row wrap class="pt-4" align-right>
+      <v-btn v-on:click="expandAll" dark>Expand</v-btn>
+      <v-btn v-on:click="collapseAll" dark>Collapse</v-btn>
+    </v-layout>
     <div class="container" style="width: 100%">
       <div class="treeSelf">
         <vue-drag-tree :data='categoriesList' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDropLeft' :fromWhere='left' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
       </div>
       <div class="treeSelf">
-        <vue-drag-tree :data='categoriesList1' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDropRight' :fromWhere='right' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
-      </div>
-      <div class='showSec'>
-        <pre>{{formatData1}}</pre>
+        <vue-drag-tree :data='categoriesList1' :allowDrag='allowDrag' :auto-expand="autoExpand" ontoggle="true" :allowDrop='allowDropRight' :fromWhere='right' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
       </div>
     </div>
     <v-layout row wrap class="pt-4" align-right>
@@ -42,7 +43,8 @@ export default{
       en: false,
       dialog: false,
       left: 'left',
-      right: 'right'
+      right: 'right',
+      autoExpand: true
     }
   },
   computed: {
@@ -125,6 +127,12 @@ export default{
           x.key = Math.floor(Math.random() * 1000000000000) + 1
         })
       }
+    },
+    collapseAll () {
+      this.autoExpand = false
+    },
+    expandAll () {
+      this.autoExpand = true
     }
   }
 }

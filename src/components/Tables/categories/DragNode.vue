@@ -6,8 +6,8 @@
         <span class='text'>{{model.label}}</span>
       </div>
     </div>
-    <div class='treeMargin' v-show="open" v-if="isFolder">
-      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :defaultText='defaultText'>
+    <div class='treeMargin' v-show="open" v-if="childrenVisible || isFolder">
+      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :autoExpand='autoExpand' :defaultText='defaultText'>
       </item>
     </div>
   </div>
@@ -30,7 +30,8 @@
         isHover: false, // The current node is hvoer
         styleObj: {
           opacity: 1
-        }
+        },
+        showChildren: false
       }
     },
     props: {
@@ -56,23 +57,32 @@
         // Default text displayed when adding a node．
         type: String,
         default: this.fromWhere
+      },
+      autoExpand: {
+        default: this.autoExpand
       }
     },
     computed: {
       isFolder () {
-        return this.model.children && this.model.children.length
+        return (this.model.children && this.model.children.length)
       },
       increaseDepth () {
         return this.depth + 1
       },
       isDraggable () {
         return this.allowDrag(this.model, this)
+      },
+      childrenVisible () {
+        this.open = this.autoExpand
+        return this.autoExpand || this.showChildren
       }
     },
     methods: {
       toggle () {
         if (this.isFolder) {
           this.open = !this.open
+        } else {
+          this.showChildren = !this.showChildren
         }
         // Call the method in the parent component of the vue-drag-tree to pass the id value of the currently clicked node
         rootTree.emitCurNodeClicked(this.model, this)
@@ -125,7 +135,7 @@
         if (!this.isFolder) {
           this.$set(this.model, 'children', [])
           this.addChild()
-          this.open = true
+          this.open = true || this.autoExpand
           this.isClicked = true
         }
       },
