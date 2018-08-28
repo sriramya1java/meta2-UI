@@ -5,6 +5,7 @@ import UpdatedTablesList from '@/components/Tables/UpdatedTablesList'
 import CreateEditTable from '@/components/Tables/CreateEditTable'
 import UpdatedNotesList from '@/components/Notes/UpdatedNotesList'
 import CreateEditNote from '@/components/Notes/CreateEditNote'
+import Hello from '@/components/Tables/CategoriesTree/Hello'
 import BootstrapVue from 'bootstrap-vue'
 
 Vue.use(Router)
@@ -55,6 +56,11 @@ export default new Router({
     {
       path: '*',
       redirect: '/'
+    },
+    {
+      path: '/categoriesTree',
+      name: 'Hello',
+      component: Hello
     }
   ]
 })
