@@ -11,7 +11,7 @@
          <v-flex xs7>
            <v-layout row wrap align-center>
              <v-flex xs2>
-             <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_rightSelected(dimensionsSelected, dimensionsList, verticalDimensionsList, 'vertical')"">
+             <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_rightSelected(dimensionsSelected, dimensionsList, verticalDimensionsList, 'vertical')">
                 <v-icon>chevron_right</v-icon>
               </v-btn><br>
               <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_leftSelected(verticalDimensionsSelected, verticalDimensionsList, dimensionsList, 'vertical')">
@@ -53,10 +53,10 @@
            </v-layout>
            <v-layout row wrap align-center>
            <v-flex xs2>
-             <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_rightSelected(dimensionsSelected, dimensionsList, horizontalDimensionsList, 'horizontal')"">
+             <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_rightSelected(dimensionsSelected, dimensionsList, horizontalDimensionsList, 'horizontal')">
                 <v-icon>chevron_right</v-icon>
               </v-btn><br>
-              <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_leftSelected(horizontalDimensionsSelected, horizontalDimensionsList, dimensionsList, 'horizontal')"">
+              <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_leftSelected(horizontalDimensionsSelected, horizontalDimensionsList, dimensionsList, 'horizontal')">
                 <v-icon>chevron_left</v-icon>
               </v-btn>
              </v-flex>
@@ -95,7 +95,7 @@
            </v-layout>
            <v-layout row wrap align-center>
            <v-flex xs2>
-             <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_rightSelected(dimensionsSelected, dimensionsList, outsideDimensionsList, 'outside')"">
+             <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_rightSelected(dimensionsSelected, dimensionsList, outsideDimensionsList, 'outside')">
                 <v-icon>chevron_right</v-icon>
               </v-btn><br>
               <v-btn slot="activator" color="grey" dark icon v-on:click="multiselect_leftSelected(outsideDimensionsSelected, outsideDimensionsList, dimensionsList, 'outside')">
