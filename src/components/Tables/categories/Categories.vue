@@ -124,7 +124,16 @@ export default{
       // change the key
       if (list && list !== undefined) {
         list.forEach(x => {
-          x.key = Math.floor(Math.random() * 1000000000000) + 1
+          let lastRandom
+          let random
+          if (lastRandom === undefined) {
+            random = Math.floor(Math.random() * (1000000000000 + 1))
+          } else {
+            random = Math.floor(Math.random() * (1000000000000))
+            if (random >= lastRandom) random += 1
+          }
+          lastRandom = random
+          x.key = lastRandom
         })
       }
     },
