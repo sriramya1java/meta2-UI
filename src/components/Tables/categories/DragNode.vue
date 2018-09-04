@@ -3,11 +3,12 @@
     <div :class='{"is-clicked": isClicked,"is-hover":isHover}' @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
       <div :style="{ 'padding-left': (this.depth - 1) * 1.5 + 'rem' }" :id='model.id' class='treeNodeText'>
         <span :class="[isClicked ? 'nodeClicked' : '','vue-drag-node-icon']"></span>
-        <span class='text'>{{model.label}}</span>
+        <span class='text' v-if="showWhat === 'label'">{{model.label}}</span>
+        <span class='text' v-if="showWhat === 'id'">{{model.id}}</span>
       </div>
     </div>
     <div class='treeMargin' v-show="open" v-if="childrenVisible || isFolder">
-      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :autoExpand='autoExpand' :defaultText='defaultText'>
+      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :autoExpand='autoExpand' :showWhat='showWhat' :defaultText='defaultText'>
       </item>
     </div>
   </div>
@@ -62,6 +63,9 @@
       },
       autoExpand: {
         default: this.autoExpand
+      },
+      showWhat: {
+        default: this.showWhat
       }
     },
     computed: {

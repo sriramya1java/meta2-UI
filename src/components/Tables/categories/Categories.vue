@@ -8,12 +8,16 @@
       <v-btn v-on:click="expandAll" dark>Expand</v-btn>
       <v-btn v-on:click="collapseAll" dark>Collapse</v-btn>
     </v-layout>
+    <v-radio-group row :mandatory="true" v-model="showOnCheck">
+      <v-radio label="Category Label" value="label"></v-radio>
+      <v-radio label="Category Id" value="id"></v-radio>
+    </v-radio-group>
     <div class="container" style="width: 100%">
       <div class="treeSelf">
-        <vue-drag-tree :data='categoriesList' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDropLeft' :fromWhere='left' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
+        <vue-drag-tree :data='categoriesList' :allowDrag='allowDrag' ontoggle="true" :allowDrop='allowDropLeft' :showWhat='showOnCheck' :fromWhere='left' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
       </div>
       <div class="treeSelf">
-        <vue-drag-tree :data='categoriesList1' :allowDrag='allowDrag' :auto-expand="autoExpand" ontoggle="true" :allowDrop='allowDropRight' :fromWhere='right' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
+        <vue-drag-tree :data='categoriesList1' :allowDrag='allowDrag' :auto-expand="autoExpand" ontoggle="true" :allowDrop='allowDropRight' :showWhat='showOnCheck' :fromWhere='right' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
       </div>
     </div>
     <v-layout row wrap class="pt-4" align-right>
@@ -44,7 +48,9 @@ export default{
       dialog: false,
       left: 'left',
       right: 'right',
-      autoExpand: true
+      autoExpand: true,
+      showOnCheck: 'label',
+      selectedItem: ''
     }
   },
   computed: {
@@ -133,6 +139,12 @@ export default{
     },
     expandAll () {
       this.autoExpand = true
+    }
+  },
+  watch: {
+    showOnCheck (val) {
+      console.log(val)
+      this.showOnCheck = val
     }
   }
 }
