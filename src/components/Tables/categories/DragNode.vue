@@ -1,5 +1,5 @@
 <template>
-  <div :style='styleObj' :draggable='isDraggable' @drag.stop='drag' @dragstart.stop='dragStart' @dragover.stop='dragOver' @dragenter.stop='dragEnter' @dragleave.stop='dragLeave' @drop.stop='drop' @dragend.stop='dragEnd' class='dnd-container'>
+  <div :style='styleObj' :draggable='isDraggable' @drag.stop='drag' @dragstart.stop='dragStart' @dragover.stop='dragOver' @dragenter.stop='dragEnter' @dragleave.stop='dragLeave' @drop.stop='drop' @dragend.stop='dragEnd' class='dnd-container'  @contextmenu.prevent="$refs.menu.open">
     <div :class="[ isClicked ? 'is-clicked' : '', isHover ? 'is-hover': '']" @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
       <div :style="{ 'padding-left': (this.depth - 1) * 1.5 + 'rem' }" :id='model.id' class='treeNodeText'>
         <span v-if="this.fromWhere === 'right'">{{  this.open  ? '&#8722;' : '&#43;'}}</span>
@@ -11,12 +11,25 @@
       <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :autoExpand='autoExpand' :showWhat='showWhat' :defaultText='defaultText'>
       </item>
     </div>
+    <vue-context ref="menu">
+      <ul>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <!-- <li @click="onClick(event.target.innerText)">Option 2</li>
+        <li @click="onClick(event.target.innerText)">Option 1</li>
+        <li @click="onClick(event.target.innerText)">Option 2</li> -->
+      </ul>
+    </vue-context>
   </div>
 </template>
 
 <script>
   import { findRoot, exchangeLeftData } from './utils.js'
   import { findRootRight, exchangeRightData } from './utilRight.js'
+  import VueContext from './vue-context'
   let id = 1000
   let fromData = null
   let toData = null
@@ -25,6 +38,9 @@
 
   export default {
     name: 'DragNode',
+    components: {
+      VueContext
+    },
     data () {
       return {
         open: false,

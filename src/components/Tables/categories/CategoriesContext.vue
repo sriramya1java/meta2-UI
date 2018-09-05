@@ -3,13 +3,29 @@
     <div @click="hideContextMenu">
       <v-btn @contextmenu.prevent="showContextMenu" dark>show menu<context-menu></context-menu></v-btn>
     </div>
+    <div>
+      <p @contextmenu.prevent="$refs.menu.open">
+        Right click on me
+      </p>
+    </div>
+    <vue-context ref="menu">
+      <ul>
+        <li @click="onClick(event.target.innerText)">Option 1</li>
+        <li @click="onClick(event.target.innerText)">Option 2</li>
+        <li @click="onClick(event.target.innerText)">Option 1</li>
+        <li @click="onClick(event.target.innerText)">Option 2</li>
+      </ul>
+    </vue-context>
   </div>
 </template>
 <script>
   import ContextMenu from './Context-menu.vue'
+  import VueContext from './vue-context'
+
   export default {
     components: {
-      ContextMenu
+      ContextMenu,
+      VueContext
     },
     name: 'CategoriesContext',
     data () {
@@ -30,7 +46,7 @@
           console.log(menu)
         }
 
-        if ((this.contextMenuWidth + event.pageX) >= window.innerWidth) {
+        /* if ((this.contextMenuWidth + event.pageX) >= window.innerWidth) {
           menu.style.left = (event.pageX - this.contextMenuWidth) + 'px'
         } else {
           menu.style.left = event.pageX + 'px'
@@ -40,9 +56,13 @@
           menu.style.top = (event.pageY - this.contextMenuHeight) + 'px'
         } else {
           menu.style.top = event.pageY + 'px'
-        }
+        } */
+        menu.style.left = '80px'
+        menu.style.top = '40px'
         menu.classList.add('active')
         console.log(menu)
+        console.log(menu.style.left)
+        console.log(menu.style.top)
       },
       hideContextMenu: () => {
         document.getElementById('context-menu').classList.remove('active')
