@@ -19,6 +19,9 @@
       <div class="treeSelf">
         <vue-drag-tree :data='categoriesList1' :allowDrag='allowDrag' :auto-expand="autoExpand" ontoggle="true" :allowDrop='allowDropRight' :showWhat='showOnCheck' :fromWhere='right' :defaultText='"New Node"' @current-node-clicked='curNodeClicked' @drag="dragHandler" @drag-enter="dragEnterHandler" @drag-leave="dragLeaveHandler" @drag-over="dragOverHandler" @drag-end="dragEndHandler" @drop="dropHandler"></vue-drag-tree>
       </div>
+      <div class='showSec'>
+        <pre>{{formatData1}}</pre>
+      </div>
     </div>
     <v-layout row wrap class="pt-4" align-right>
       <v-btn slot="activator" dark>Save</v-btn>
@@ -107,7 +110,8 @@ export default{
     },
     curNodeClicked (model, component) {
       // console.log('******************************', this.curNodeClicked)
-      // console.log('curNodeClicked', model, component)
+      console.log(model.label)
+      // model.label = 'Test'
     },
     dragHandler (model, component, e) {
       // console.log('dragHandler: ', model, component, e)
@@ -190,6 +194,8 @@ ul {
   width: 40%;
   text-align: left;
   padding: 1rem;
+  height: 300px;
+  overflow: scroll;
 }
 .showSec {
   border: 3px solid #e5e9f2;

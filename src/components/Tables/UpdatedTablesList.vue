@@ -20,6 +20,32 @@
         <v-btn :disabled="!checked"  @click='fileDelivery'>
           Create Delivery File
         </v-btn>
+        <v-dialog
+          v-model="dialog"
+          max-width="290"
+        >
+          <v-card>
+            <v-card-text>
+              Do you want to deliver the files
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="green darken-1"
+                flat="flat"
+                @click="dialog = false">
+                CANCEL
+              </v-btn>
+              <v-btn
+                color="green darken-1"
+                flat="flat"
+                @click="dialog = false"
+              >
+                OK
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-flex>
     </v-container>
     <router-view></router-view>
@@ -38,7 +64,14 @@
         gridOptions: null,
         tableId: null,
         pathVal: '',
-        checked: false
+        checked: false,
+        exportTableData: {
+          program: '',
+          component: '',
+          dataset: '',
+          tables: []
+        },
+        dialog: false
       }
     },
     components: {
@@ -88,11 +121,20 @@
         }
       },
       fileDelivery () {
-        let tableValues = []
+        let tablesArray = []
+        let datasetArray = []
         this.gridOptions.api.getSelectedRows().forEach(x => {
-          tableValues.push(x.tableString)
+          tablesArray.push(x.tableString)
+          datasetArray.push(x.datasetString)
         })
-        confirm('Do you want to generate XML for the selected tables? The selected tables are ' + tableValues)
+        const isPresent = datasetArray.every((val, i, arr) => val === arr[0])
+        if (!isPresent) {
+          alert('please choose only one datase')
+        } else {
+          this.dialog = true
+          console.log(this.gridOptions.api.getSelectedRows())
+          confirm('do you want to deliver the file ' + tablesArray)
+        }
       },
       iconClick (val) {
         // `event` is the native DOM event
@@ -144,7 +186,7 @@
 </script>
 <!-- Add "scoped" attribute to limit css to this component only -->
 <style>
-  button:disabled {
-    cursor: not allowed;
+  v-btn:disabled {
+    cursor: not-allowed;
   }
 </style>

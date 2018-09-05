@@ -1,10 +1,10 @@
 <template>
   <div :style='styleObj' :draggable='isDraggable' @drag.stop='drag' @dragstart.stop='dragStart' @dragover.stop='dragOver' @dragenter.stop='dragEnter' @dragleave.stop='dragLeave' @drop.stop='drop' @dragend.stop='dragEnd' class='dnd-container'>
-    <div :class='{"is-clicked": isClicked,"is-hover":isHover}' @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
+    <div :class="[ isClicked ? 'is-clicked' : '', isHover ? 'is-hover': '']" @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
       <div :style="{ 'padding-left': (this.depth - 1) * 1.5 + 'rem' }" :id='model.id' class='treeNodeText'>
-        <span :class="[isClicked ? 'nodeClicked' : '','vue-drag-node-icon']"></span>
-        <span class='text' v-if="showWhat === 'label'">{{model.label}}</span>
-        <span class='text' v-if="showWhat === 'id'">{{model.id}}</span>
+        <span v-if="this.fromWhere === 'right'">{{  this.open  ? '&#8722;' : '&#43;'}}</span>
+        <span class='text' v-if="showWhat === 'label'">&nbsp;&nbsp;&nbsp;{{model.label}}</span>
+        <span class='text' v-if="showWhat === 'id'">&nbsp;&nbsp;&nbsp;{{model.id}}</span>
       </div>
     </div>
     <div class='treeMargin' v-show="open" v-if="childrenVisible || isFolder">
@@ -80,6 +80,7 @@
       },
       childrenVisible () {
         this.open = this.autoExpand
+        this.isClicked = this.autoExpand
         return this.autoExpand || this.showChildren
       }
     },
@@ -95,7 +96,6 @@
 
         // Record the status of the node being clicked
         this.isClicked = !this.isClicked
-
         // check if children and open all child on click
         if (this.$children && this.$children.length > 0) {
           // If it has children components.
@@ -152,10 +152,12 @@
         this.isHover = false
       },
       addChild () {
-        this.model.children.push({
-          label: this.defaultText,
-          id: id++
-        })
+        if (this.fromWhere === 'right') {
+          this.model.children.push({
+            label: this.defaultText,
+            id: id++
+          })
+        }
       },
       removeChild (id) {
         // Get the model.children of the parent component

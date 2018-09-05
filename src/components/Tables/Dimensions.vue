@@ -265,60 +265,9 @@ export default {
       if (this.outsideDimensionsSelected.length === 1 || this.horizontalDimensionsSelected.length === 1 || this.verticalDimensionsSelected.length === 1) {
         this.$store.dispatch('getCategoriesList', axes)
       } else {
-        alert('choose atleast one and only one dimension')
+        alert('choose one dimension')
       }
     }
-    /* moveVerticalAxisElement: function (positionChange) {
-      let oldIndex = verticalDimensionsList.findIndex(y => y.label === this.verticalDimensionsSelected[0].label)
-      if (oldIndex > -1) {
-        let newIndex = (oldIndex + positionChange)
-        if (newIndex < 0) {
-          newIndex = 0
-        } else if (newIndex >= verticalDimensionsList.length) {
-          newIndex = verticalDimensionsList.length
-        }
-        let arrayClone = verticalDimensionsList.slice()
-        arrayClone.splice(oldIndex, 1)
-        arrayClone.splice(newIndex, 0, this.verticalDimensionsSelected[0])
-        verticalDimensionsList = arrayClone
-        return verticalDimensionsList
-      }
-      return verticalDimensionsList
-    },
-    moveHorizontalAxisElement: function (positionChange) {
-      let oldIndex = this.horizontalDimensionsList.findIndex(y => y.label === this.horizontalDimensionsSelected[0].label)
-      if (oldIndex > -1) {
-        let newIndex = (oldIndex + positionChange)
-        if (newIndex < 0) {
-          newIndex = 0
-        } else if (newIndex >= this.horizontalDimensionsList.length) {
-          newIndex = this.horizontalDimensionsList.length
-        }
-        let arrayClone = this.horizontalDimensionsList.slice()
-        arrayClone.splice(oldIndex, 1)
-        arrayClone.splice(newIndex, 0, this.horizontalDimensionsSelected[0])
-        this.horizontalDimensionsList = arrayClone
-        return this.horizontalDimensionsList
-      }
-      return this.horizontalDimensionsList
-    },
-    moveOutsideAxisElement: function (positionChange) {
-      let oldIndex = this.outsideDimensionsList.findIndex(y => y.label === this.outsideDimensionsSelected[0].label)
-      if (oldIndex > -1) {
-        let newIndex = (oldIndex + positionChange)
-        if (newIndex < 0) {
-          newIndex = 0
-        } else if (newIndex >= this.outsideDimensionsList.length) {
-          newIndex = this.outsideDimensionsList.length
-        }
-        let arrayClone = this.outsideDimensionsList.slice()
-        arrayClone.splice(oldIndex, 1)
-        arrayClone.splice(newIndex, 0, this.outsideDimensionsSelected[0])
-        this.outsideDimensionsList = arrayClone
-        return this.outsideDimensionsList
-      }
-      return this.outsideDimensionsList
-    } */
   }
 }
 </script>
