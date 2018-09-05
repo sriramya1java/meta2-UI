@@ -48,6 +48,7 @@
     methods: {
     },
     created: function () {
+      console.log('header componenet created')
       console.log('dispatching the user actions')
       this.$store.dispatch('getUserAndPrograms')
     },

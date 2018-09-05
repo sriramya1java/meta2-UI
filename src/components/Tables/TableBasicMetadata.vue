@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="form" v-model="valid" lazy-validation>
     <v-layout row wrap align-center>
       <v-flex xs2>
         <v-subheader>Program: <span>*</span></v-subheader>
@@ -9,7 +9,8 @@
           :items="programs"
           label="Select a Program"
           v-model="selectedProgram"
-          v-on:change="getComponentsList"></v-select>
+          v-on:change="getComponentsList"
+          :rules="selectedProgramRules"></v-select>
       </v-flex>
        <v-flex xs6>
         <span>(* = required)</span>
@@ -23,7 +24,8 @@
           label="Select a Component"
           v-model="selectedComponent"
           v-on:change="getDatasetsList"
-          :disabled="selectedProgram.length === 0"></v-select>
+          :disabled="selectedProgram.length === 0"
+          :rules="selectedComponentRules"></v-select>
       </v-flex>
       <v-flex xs2>
         <v-subheader>Dataset: <span>*</span></v-subheader>
@@ -33,21 +35,26 @@
           :items="datasets"
           label="Select a Dataset"
           :disabled="selectedComponent.length === 0"
-          v-model="selectedDataset"></v-select>
+          v-model="selectedDataset"
+          :rules="selectedDatasetRules"></v-select>
       </v-flex>
       <v-flex xs2>
         <v-subheader>Table ID: <span>*</span></v-subheader>
       </v-flex>
       <v-flex xs10>
         <v-text-field
-          label="Enter a Table ID"></v-text-field>
+          label="Enter a Table ID"
+          v-model="selectedTableId"
+          :rules="selectedTableIdRules"></v-text-field>
       </v-flex>
       <v-flex xs2>
         <v-subheader>Display Label: <span>*</span></v-subheader>
       </v-flex>
       <v-flex xs10>
         <v-text-field
-          label="Enter a Display Label"></v-text-field>
+          label="Enter a Display Label"
+          v-model="selectedDisplayLabel"
+          :rules="selectedDisplayLabelRules"></v-text-field>
       </v-flex>
       <v-flex xs2>
         <v-subheader>Display Description: </v-subheader>
@@ -114,7 +121,7 @@
           label="Select a Presentational Style"></v-select>
       </v-flex>
       <v-flex xs12 text-right>
-        <v-btn>Save</v-btn>
+        <v-btn :disabled="!valid" @click="submit">Save</v-btn>
       </v-flex>
     </v-layout>
   </v-form>
@@ -125,7 +132,23 @@ export default {
   data () {
     return {
       tableUniverse: [],
-      dialog: false
+      dialog: false,
+      valid: true,
+      selectedProgramRules: [
+        v => !!v || 'Please select a program'
+      ],
+      selectedComponentRules: [
+        v => !!v || 'Please select a component'
+      ],
+      selectedDatasetRules: [
+        v => !!v || 'Please select a dataset'
+      ],
+      selectedTableIdRules: [
+        v => !!v || 'Please enter a tableId'
+      ],
+      selectedDisplayLabelRules: [
+        v => !!v || 'Please enter a display label'
+      ]
     }
   },
   /* gets the list of programs associated with the user */
@@ -148,7 +171,10 @@ export default {
         console.log('dispatching table universe action')
         this.$store.dispatch('updateSelectedTableUniverse', [])
       }
-    })
+    }),
+    submit () {
+      alert('cretaed a table')
+    }
   },
   computed: {
   /* gets the list of programs associated to the user and displays in the template whose v-model is programs */

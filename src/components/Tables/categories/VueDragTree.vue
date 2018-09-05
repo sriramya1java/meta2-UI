@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-for='(item,index) in newData'>
-      <drag-node :model='item' :allowDrag='allowDrag' :auto-expand="autoExpand" :fromWhere="fromWhere" :allowDrop='allowDrop' :depth='increaseDepth' :defaultText='defaultText' :key='index'></drag-node>
+      <drag-node :model='item' :allowDrag='allowDrag' :auto-expand="autoExpand" :show-what="showWhat" :fromWhere="fromWhere" :allowDrop='allowDrop' :depth='increaseDepth' :defaultText='defaultText' :key='index'></drag-node>
     </template>
   </div>
 </template>
@@ -36,6 +36,9 @@
       },
       autoExpand: {
         default: this.autoExpand
+      },
+      showWhat: {
+        default: this.showWhat
       }
     },
     computed: {

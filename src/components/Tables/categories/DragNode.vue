@@ -1,21 +1,35 @@
 <template>
-  <div :style='styleObj' :draggable='isDraggable' @drag.stop='drag' @dragstart.stop='dragStart' @dragover.stop='dragOver' @dragenter.stop='dragEnter' @dragleave.stop='dragLeave' @drop.stop='drop' @dragend.stop='dragEnd' class='dnd-container'>
-    <div :class='{"is-clicked": isClicked,"is-hover":isHover}' @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
+  <div :style='styleObj' :draggable='isDraggable' @drag.stop='drag' @dragstart.stop='dragStart' @dragover.stop='dragOver' @dragenter.stop='dragEnter' @dragleave.stop='dragLeave' @drop.stop='drop' @dragend.stop='dragEnd' class='dnd-container'  @contextmenu.prevent="$refs.menu.open">
+    <div :class="[ isClicked ? 'is-clicked' : '', isHover ? 'is-hover': '']" @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
       <div :style="{ 'padding-left': (this.depth - 1) * 1.5 + 'rem' }" :id='model.id' class='treeNodeText'>
-        <span :class="[isClicked ? 'nodeClicked' : '','vue-drag-node-icon']"></span>
-        <span class='text'>{{model.label}}</span>
+        <span v-if="this.fromWhere === 'right'">{{  this.open  ? '&#8722;' : '&#43;'}}</span>
+        <span class='text pl-2' v-if="showWhat === 'label'" >{{model.label}}</span>
+        <span class='text' v-if="showWhat === 'id'">&nbsp;&nbsp;&nbsp;{{model.id}}</span>
       </div>
     </div>
     <div class='treeMargin' v-show="open" v-if="childrenVisible || isFolder">
-      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :autoExpand='autoExpand' :defaultText='defaultText'>
+      <item v-for="item2 in model.children" :allowDrag='allowDrag' :allowDrop='allowDrop' :depth='increaseDepth' :model="item2" :key='item2.key' :fromWhere='fromWhere' :autoExpand='autoExpand' :showWhat='showWhat' :defaultText='defaultText'>
       </item>
     </div>
+    <vue-context ref="menu">
+      <ul>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <li>Option 1</li>
+        <!-- <li @click="onClick(event.target.innerText)">Option 2</li>
+        <li @click="onClick(event.target.innerText)">Option 1</li>
+        <li @click="onClick(event.target.innerText)">Option 2</li> -->
+      </ul>
+    </vue-context>
   </div>
 </template>
 
 <script>
   import { findRoot, exchangeLeftData } from './utils.js'
   import { findRootRight, exchangeRightData } from './utilRight.js'
+  import VueContext from './vue-context'
   let id = 1000
   let fromData = null
   let toData = null
@@ -24,6 +38,9 @@
 
   export default {
     name: 'DragNode',
+    components: {
+      VueContext
+    },
     data () {
       return {
         open: false,
@@ -62,6 +79,9 @@
       },
       autoExpand: {
         default: this.autoExpand
+      },
+      showWhat: {
+        default: this.showWhat
       }
     },
     computed: {
@@ -76,6 +96,7 @@
       },
       childrenVisible () {
         this.open = this.autoExpand
+        this.isClicked = this.autoExpand
         return this.autoExpand || this.showChildren
       }
     },
@@ -91,7 +112,6 @@
 
         // Record the status of the node being clicked
         this.isClicked = !this.isClicked
-
         // check if children and open all child on click
         if (this.$children && this.$children.length > 0) {
           // If it has children components.
@@ -148,10 +168,12 @@
         this.isHover = false
       },
       addChild () {
-        this.model.children.push({
-          label: this.defaultText,
-          id: id++
-        })
+        if (this.fromWhere === 'right') {
+          this.model.children.push({
+            label: this.defaultText,
+            id: id++
+          })
+        }
       },
       removeChild (id) {
         // Get the model.children of the parent component

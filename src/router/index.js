@@ -6,6 +6,7 @@ import CreateEditTable from '@/components/Tables/CreateEditTable'
 import UpdatedNotesList from '@/components/Notes/UpdatedNotesList'
 import CreateEditNote from '@/components/Notes/CreateEditNote'
 import BootstrapVue from 'bootstrap-vue'
+import CategoriesContext from '@/components/Tables/categories/CategoriesContext'
 
 Vue.use(Router)
 Vue.use(VueBreadcrumbs)
@@ -55,6 +56,12 @@ export default new Router({
     {
       path: '*',
       redirect: '/'
+    },
+    {
+      path: '/context',
+      name: 'CategoriesContext',
+      props: true,
+      component: CategoriesContext
     }
   ]
 })
