@@ -31,7 +31,7 @@
               <v-btn slot="activator" color="grey" dark icon v-on:click="moveVerticalAxisElement(1)">
                 <v-icon>expand_more</v-icon>
               </v-btn><br>
-              <v-dialog v-model=dialog persistent width="1000" :disabled="categoriesDialog()">
+              <v-dialog v-model=dialog persistent fullscreen :disabled="categoriesDialog()">
                 <v-btn slot="activator" color="grey" dark icon @click="categoriesApiCall('vertical')">
                 <v-icon>edit</v-icon>
               </v-btn>
@@ -73,7 +73,7 @@
               <v-btn slot="activator" color="grey" dark icon v-on:click="moveHorizontalAxisElement(1)">
                 <v-icon>expand_more</v-icon>
               </v-btn><br>
-              <v-dialog v-model=dialog persistent width="1000">
+              <v-dialog v-model=dialog2 persistent fullscreen>
                 <v-btn slot="activator"color="grey" dark icon @click="categoriesApiCall('horizontal')">
                 <v-icon>edit</v-icon>
               </v-btn>
@@ -81,7 +81,7 @@
                 <v-card-title class="headline grey" primary-title dense>
                    Categories
                    <v-spacer></v-spacer>
-                   <v-btn slot="activator" icon @click.native="dialog = false">
+                   <v-btn slot="activator" icon @click.native="dialog2 = false">
                 <v-icon>close</v-icon>
               </v-btn>
                 </v-card-title>
@@ -115,7 +115,7 @@
               <v-btn slot="activator" color="grey" dark icon v-on:click="moveOutsideAxisElement(1)">
                 <v-icon>expand_more</v-icon>
               </v-btn><br>
-              <v-dialog v-model=dialog persistent width="1000">
+              <v-dialog v-model=dialog1 persistent fullscreen>
                 <v-btn slot="activator" color="grey" dark icon @click="categoriesApiCall('outside')">
                 <v-icon>edit</v-icon>
               </v-btn>
@@ -123,7 +123,7 @@
                 <v-card-title class="headline grey" primary-title dense>
                    Categories
                    <v-spacer></v-spacer>
-                   <v-btn slot="activator" icon @click.native="dialog = false">
+                   <v-btn slot="activator" icon @click.native="dialog1 = false">
                 <v-icon>close</v-icon>
               </v-btn>
                 </v-card-title>
@@ -153,7 +153,9 @@ export default {
       /* horizontalDimensionsSelected: [], */
       /* outsideDimensionsSelected: [], */
       dimensionsSelected: [],
-      dialog: false
+      dialog: false,
+      dialog1: false,
+      dialog2: false
     }
   },
   computed: {

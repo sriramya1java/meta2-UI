@@ -1,8 +1,10 @@
 <template>
 <div>
-  <!-- <div v-if="noOfDimensionsSelected() === true">
-    <v-subheader>Please select only one dimension to edit.</v-subheader>
-  </div> -->
+  <div>
+    <div @click="hideContextMenu">
+      <v-btn @contextmenu.prevent="showContextMenu" dark>show menu<context-menu></context-menu></v-btn>
+    </div>
+  </div>
   <div class="main">
     <v-layout row wrap class="pt-4" align-right>
       <v-btn v-on:click="expandAll" dark>Expand</v-btn>
@@ -40,10 +42,12 @@
 </template>
 <script>
 import VueDragTree from './VueDragTree.vue'
+import ContextMenu from './Context-menu.vue'
 export default{
   props: ['axesDimensionsSelected'],
   components: {
-    VueDragTree
+    VueDragTree,
+    ContextMenu
   },
   data () {
     return {
@@ -53,7 +57,9 @@ export default{
       right: 'right',
       autoExpand: true,
       showOnCheck: 'label',
-      selectedItem: ''
+      selectedItem: '',
+      contextMenuWidth: null,
+      contextMenuHeight: null
     }
   },
   computed: {
@@ -143,6 +149,33 @@ export default{
     },
     expandAll () {
       this.autoExpand = true
+    },
+    showContextMenu: () => {
+      let menu = document.getElementById('context-menu')
+      if (!this.contextMenuWidth || !this.contextMenuHeight) {
+        menu.style.visibility = 'hidden'
+        menu.style.display = 'block'
+        this.contextMenuWidth = menu.offsetWidth
+        this.contextMenuHeight = menu.offsetHeight
+        menu.removeAttribute('style')
+        console.log(menu)
+      }
+
+      if ((this.contextMenuWidth + event.pageX) >= window.innerWidth) {
+        menu.style.left = (event.pageX - this.contextMenuWidth) + 'px'
+      } else {
+        menu.style.left = event.pageX + 'px'
+      }
+
+      if ((this.contextMenuHeight + event.pageY) >= window.innerHeight) {
+        menu.style.top = (event.pageY - this.contextMenuHeight) + 'px'
+      } else {
+        menu.style.top = event.pageY + 'px'
+      }
+      menu.classList.add('active')
+    },
+    hideContextMenu: () => {
+      document.getElementById('context-menu').classList.remove('active')
     }
   },
   watch: {

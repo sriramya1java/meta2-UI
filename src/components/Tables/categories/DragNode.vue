@@ -3,7 +3,7 @@
     <div :class="[ isClicked ? 'is-clicked' : '', isHover ? 'is-hover': '']" @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
       <div :style="{ 'padding-left': (this.depth - 1) * 1.5 + 'rem' }" :id='model.id' class='treeNodeText'>
         <span v-if="this.fromWhere === 'right'">{{  this.open  ? '&#8722;' : '&#43;'}}</span>
-        <span class='text' v-if="showWhat === 'label'">&nbsp;&nbsp;&nbsp;{{model.label}}</span>
+        <span class='text pl-2' v-if="showWhat === 'label'" >{{model.label}}</span>
         <span class='text' v-if="showWhat === 'id'">&nbsp;&nbsp;&nbsp;{{model.id}}</span>
       </div>
     </div>
