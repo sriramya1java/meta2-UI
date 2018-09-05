@@ -13,14 +13,8 @@
     </div>
     <vue-context ref="menu">
       <ul>
-        <li>Option 1</li>
-        <li>Option 1</li>
-        <li>Option 1</li>
-        <li>Option 1</li>
-        <li>Option 1</li>
-        <!-- <li @click="onClick(event.target.innerText)">Option 2</li>
-        <li @click="onClick(event.target.innerText)">Option 1</li>
-        <li @click="onClick(event.target.innerText)">Option 2</li> -->
+        <li @click="eventClick()">Edit</li>
+        <li @click="eventClick()">Delete</li>
       </ul>
     </vue-context>
   </div>
@@ -233,7 +227,12 @@
       dragEnd (e) {
         rootTree.emitDragEnd(this.model, this, e)
         return // eslint-disable-line no-useless-return
+      },
+      eventClick () {
+        console.log(event)
+        alert(event.target.innerText)
       }
+
     },
     beforeCreate () {
       this.$options.components.item = require('./DragNode.vue').default

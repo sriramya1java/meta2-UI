@@ -47,7 +47,7 @@
     list-style: none;
     position: absolute;
     z-index: 2147483647;
-    background-color: grey;
+    background-color: black;
     border: 1px solid #ebebeb;
     border-bottom-width: 0px;
   }
