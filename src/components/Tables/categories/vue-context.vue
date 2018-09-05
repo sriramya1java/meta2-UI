@@ -78,7 +78,8 @@
        * @param {MouseEvent} event
        * @param {array|object|string} data User provided data for the menu
        */
-      open (event, data) {
+      open (data) {
+        alert(event.target.innerText)
         this.data = data
         this.show = true
 
