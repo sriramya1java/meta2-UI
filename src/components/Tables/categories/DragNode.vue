@@ -1,10 +1,10 @@
 <template>
-  <div :style='styleObj' :draggable='isDraggable' @drag.stop='drag' @dragstart.stop='dragStart' @dragover.stop='dragOver' @dragenter.stop='dragEnter' @dragleave.stop='dragLeave' @drop.stop='drop' @dragend.stop='dragEnd' class='dnd-container'  @contextmenu.prevent="$refs.menu.open()">
-    <div :class="[ isClicked ? 'is-clicked' : '', isHover ? 'is-hover': '']" @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
+  <div :style='styleObj' :draggable='isDraggable' @drag.stop='drag' @dragstart.stop='dragStart' @dragover.stop='dragOver' @dragenter.stop='dragEnter' @dragleave.stop='dragLeave' @drop.stop='drop' @dragend.stop='dragEnd' class='dnd-container'>
+    <div :class="[isHover ? 'is-hover': '']" @click="toggle" @mouseover='mouseOver' @mouseout='mouseOut' @dblclick="changeType">
       <div :style="{ 'padding-left': (this.depth - 1) * 1.5 + 'rem' }" :id='model.id' class='treeNodeText'>
         <span v-if="this.fromWhere === 'right'">{{  this.open  ? '&#8722;' : '&#43;'}}</span>
-        <span class='text pl-2' v-if="showWhat === 'label'" >{{model.label}}</span>
-        <span class='text' v-if="showWhat === 'id'">&nbsp;&nbsp;&nbsp;{{model.id}}</span>
+        <span class='text pl-2' v-if="showWhat === 'label'"  @contextmenu.prevent="$refs.menu.openContext(model)">{{model.label}}</span>
+        <span class='text' v-if="showWhat === 'id'"  @contextmenu.prevent="$refs.menu.openContext(model)">&nbsp;&nbsp;&nbsp;{{model.id}}</span>
       </div>
     </div>
     <div class='treeMargin' v-show="open" v-if="childrenVisible || isFolder">
@@ -44,7 +44,8 @@
           opacity: 1
         },
         showChildren: false,
-        from: ''
+        from: '',
+        isRightClicked: false
       }
     },
     props: {

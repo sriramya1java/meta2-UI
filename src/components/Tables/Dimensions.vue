@@ -31,7 +31,7 @@
               <v-btn slot="activator" color="grey" dark icon v-on:click="moveVerticalAxisElement(1)">
                 <v-icon>expand_more</v-icon>
               </v-btn><br>
-              <v-dialog v-model=dialog persistent fullscreen :disabled="categoriesDialog()">
+              <v-dialog v-model=dialog scrollable fullscreen :disabled="categoriesDialog()">
                 <v-btn slot="activator" color="grey" dark icon @click="categoriesApiCall('vertical')">
                 <v-icon>edit</v-icon>
               </v-btn>

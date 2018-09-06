@@ -1,10 +1,5 @@
 <template>
 <div>
-  <div>
-    <div @click="hideContextMenu">
-      <v-btn @contextmenu.prevent="showContextMenu" dark>show menu<context-menu></context-menu></v-btn>
-    </div>
-  </div>
   <div class="main">
     <v-layout row wrap class="pt-4" align-right>
       <v-btn v-on:click="expandAll" dark>Expand</v-btn>

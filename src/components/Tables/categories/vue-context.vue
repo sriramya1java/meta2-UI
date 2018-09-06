@@ -38,7 +38,8 @@
         top: null,
         left: null,
         show: false,
-        data: null
+        data: null,
+        scrolled: false
       }
     },
 
@@ -75,16 +76,16 @@
       /**
        * Open the context menu.
        *
-       * @param {MouseEvent} event
+       * @param model
        * @param {array|object|string} data User provided data for the menu
        */
-      open (data) {
-        alert(event.target.innerText)
+      openContext (model, data) {
         this.data = data
         this.show = true
-
+        console.log(model)
+        let $evt = event
         this.$nextTick(() => {
-          this.positionMenu(event.clientY, event.clientX)
+          this.positionMenu($evt.clientY, $evt.clientX)
           this.$el.focus()
         })
       },
@@ -116,6 +117,12 @@
        */
       removeScrollEventListener () {
         window.removeEventListener('scroll', this.close)
+      },
+      moveScroll () {
+        // Any code to be executed when the window is scrolled
+        console.log('scrolling....................................', this.scrolled)
+        this.scrolled = window.scrollY > 0
+        console.log('scrolling after ....................................', this.scrolled)
       }
     },
 
@@ -137,6 +144,12 @@
           this.removeScrollEventListener()
         }
       }
+    },
+    created () {
+      window.addEventListener('scroll', this.moveScroll)
+    },
+    destroyed () {
+      window.removeEventListener('scroll', this.moveScroll)
     }
   }
 </script>
@@ -149,14 +162,12 @@
 
   .v-context {
     background: black;
-    border: 1px solid $gray74;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    display: block;
     margin: 0;
     padding: 0;
     position: fixed;
     width: 10%;
     z-index: 99999;
+    margin-left: 10%;
 
     ul {
       list-style: none;
